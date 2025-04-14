@@ -82,8 +82,10 @@ def get_products():
         'name': p.name,
         'price': p.price,
         'description': p.description,
-        'company': p.company if hasattr(p, 'company') else None,
-        'stock': p.stock if hasattr(p, 'stock') else 0
+        'company': p.company,
+        'stock': p.stock,
+        'images': p.images if p.images else ['/static/images/placeholder.jpg'],
+        'category': p.category
     } for p in products])
 
 @app.route('/api/products', methods=['POST'])
