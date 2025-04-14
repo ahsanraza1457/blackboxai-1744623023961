@@ -1,100 +1,99 @@
-// Mobile menu toggle functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Cart functionality
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Update cart count
-    function updateCartCount() {
-        const count = cart.reduce((total, item) => total + item.quantity, 0);
-        const cartCountElements = document.querySelectorAll('.cart-count');
-        cartCountElements.forEach(el => {
-            el.textContent = count;
-        });
-    }
-    
-    // Initialize cart count
-    updateCartCount();
-    
-    // Product search functionality
-    const searchForm = document.querySelector('.search-form');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const searchTerm = this.querySelector('input').value.trim();
-            if (searchTerm) {
-                window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
-            }
-        });
-    }
+import apiService from './api.js';
 
-    // Mobile menu toggle
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
+// DOM Elements
+const productList = document.getElementById('product-list');
+const orderForm = document.getElementById('order-form');
+const referralSection = document.getElementById('referral-section');
+const pointsDisplay = document.getElementById('points-display');
 
-    // Add to cart functionality
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.dataset.id;
-            const productName = this.dataset.name;
-            const productPrice = parseFloat(this.dataset.price);
-            const productImage = this.dataset.image;
-            
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: productName,
-                    price: productPrice,
-                    image: productImage,
-                    quantity: 1
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            
-            // Show notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
-            notification.textContent = `${productName} added to cart`;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        });
-    });
+// Initialize application
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Load products
+        const products = await apiService.getProducts();
+        renderProducts(products);
 
-    // Newsletter subscription
-    const newsletterForm = document.querySelector('.newsletter-form');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            // In a real app, you would send this to your backend
-            console.log('Subscribed email:', email);
-            alert('Thank you for subscribing to our newsletter!');
-            this.reset();
-        });
+        // Setup event listeners
+        orderForm.addEventListener('submit', handleOrderSubmit);
+        
+        // Load user data if logged in
+        if (localStorage.getItem('token')) {
+            loadUserData();
+        }
+    } catch (error) {
+        handleApiError(error);
     }
 });
 
-// Utility functions
-function formatPrice(price) {
-    return '₹' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+// Product rendering
+function renderProducts(products) {
+    productList.innerHTML = products.map(product => `
+        <div class="product-card">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p>Price: ₹${product.price}</p>
+            <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+        </div>
+    `).join('');
+
+    // Add event listeners to cart buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', addToCart);
+    });
 }
 
-function debounce(func, timeout = 300) {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+// Order handling
+async function handleOrderSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(orderForm);
+    const orderData = {
+        products: Array.from(document.querySelectorAll('.cart-item')).map(item => ({
+            id: item.dataset.id,
+            quantity: item.querySelector('.quantity').value
+        })),
+        shippingAddress: formData.get('address'),
+        paymentMethod: formData.get('payment')
     };
+
+    try {
+        const order = await apiService.createOrder(orderData);
+        alert(`Order #${order.id} placed successfully!`);
+        orderForm.reset();
+    } catch (error) {
+        handleApiError(error);
+    }
+}
+
+// User data loading
+async function loadUserData() {
+    try {
+        const userId = localStorage.getItem('userId');
+        const [referrals, points] = await Promise.all([
+            apiService.getReferrals(userId),
+            apiService.getPoints(userId)
+        ]);
+
+        renderReferrals(referrals);
+        renderPoints(points);
+    } catch (error) {
+        handleApiError(error);
+    }
+}
+
+// Helper functions
+function renderReferrals(referrals) {
+    referralSection.innerHTML = `
+        <h3>Your Referrals</h3>
+        <ul>
+            ${referrals.map(ref => `<li>${ref.name} - ${ref.status}</li>`).join('')}
+        </ul>
+    `;
+}
+
+function renderPoints(points) {
+    pointsDisplay.innerHTML = `
+        <h3>Your Points: ${points.balance}</h3>
+        <button id="redeem-points">Redeem Points</button>
+    `;
+    document.getElementById('redeem-points').addEventListener('click', showRedemptionForm);
 }
