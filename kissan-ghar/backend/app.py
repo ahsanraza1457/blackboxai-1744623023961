@@ -71,7 +71,14 @@ with app.app_context():
 @app.route('/api/products', methods=['GET'])
 def get_products():
     products = Product.query.all()
-    return jsonify([{'id': p.id, 'name': p.name, 'price': p.price, 'description': p.description, 'image': p.image} for p in products])
+    return jsonify([{
+        'id': p.id,
+        'name': p.name,
+        'price': p.price,
+        'description': p.description,
+        'company': p.company if hasattr(p, 'company') else None,
+        'stock': p.stock if hasattr(p, 'stock') else 0
+    } for p in products])
 
 @app.route('/api/products', methods=['POST'])
 def add_product():
@@ -208,6 +215,17 @@ def redeem_points():
         'remaining_points': user.points
     })
 
+@app.route('/api/orders', methods=['GET'])
+def get_orders():
+    orders = Order.query.all()
+    return jsonify([{
+        'id': order.id,
+        'user_id': order.user_id,
+        'total_amount': order.total_amount,
+        'status': order.status,
+        'created_at': order.created_at
+    } for order in orders])
+
 @app.route('/api/orders', methods=['POST'])
 def create_order():
     data = request.json
@@ -226,11 +244,14 @@ def create_order():
         
         db.session.add(order)
         
-        # Update product stock
+        # Update product stock (simplified to only update stock)
         for item in data['items']:
             product = Product.query.get(item['product_id'])
             if product:
-                product.stock -= item['quantity']
+                if hasattr(product, 'stock'):
+                    product.stock -= item['quantity']
+                else:
+                    raise ValueError(f"Product {item['product_id']} has no stock attribute")
         
         db.session.commit()
         
