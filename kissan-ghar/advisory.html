@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Advisory - Kissan Ghar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-green-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold">Kissan Ghar</div>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-yellow-300">Home</a>
+                <a href="products.html" class="hover:text-yellow-300">Products</a>
+                <a href="advisory.html" class="hover:text-yellow-300 font-bold">Advisory</a>
+                <a href="blog.html" class="hover:text-yellow-300">Blog</a>
+                <a href="contact.html" class="hover:text-yellow-300">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="account.html" class="hover:text-yellow-300"><i class="fas fa-user"></i></a>
+                <a href="cart.html" class="hover:text-yellow-300 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-green-700 text-white py-20">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Farmer Advisory Services</h1>
+            <p class="text-xl mb-8">Expert guidance for better farming practices and higher yields</p>
+        </div>
+    </section>
+
+    <!-- Advisory Sections -->
+    <section class="container mx-auto py-12 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Crop Cultivation -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-green-600 text-white p-4">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-seedling mr-2"></i> Crop Cultivation
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Wheat Cultivation Guide</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Best practices for wheat cultivation including soil preparation, sowing techniques, and irrigation methods for optimal yield.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Rice Farming Techniques</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Comprehensive guide to rice farming including water management, transplanting methods, and organic cultivation.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Vegetable Farming Calendar</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Month-by-month guide for vegetable farming with optimal planting times for different regions.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pest Management -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-green-600 text-white p-4">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-bug mr-2"></i> Pest Management
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Common Wheat Pests</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Identification and control measures for common wheat pests including aphids, armyworms, and rust.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Organic Pest Control</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Natural and organic methods for pest control including neem oil, companion planting, and biological controls.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Pesticide Safety Guide</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Safe handling and application of pesticides including protective equipment and environmental considerations.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soil Health -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-green-600 text-white p-4">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-tractor mr-2"></i> Soil Health
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Soil Testing Guide</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">How to collect soil samples, interpret test results, and amend soil based on nutrient deficiencies.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Composting Techniques</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Methods for creating high-quality compost from farm and kitchen waste to improve soil fertility.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                        <button class="accordion-btn w-full text-left font-medium flex justify-between items-center">
+                            <span>Crop Rotation Guide</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content mt-2">
+                            <p class="text-gray-700">Benefits of crop rotation and recommended sequences for different soil types and regions.</p>
+                            <a href="#" class="text-green-600 hover:underline mt-2 inline-block">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Tutorials -->
+        <div class="mt-16">
