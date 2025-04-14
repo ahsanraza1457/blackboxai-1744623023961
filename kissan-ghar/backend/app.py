@@ -1,9 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+import os
+import random
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-app = Flask(__name__)
+# Configure frontend directory
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+app = Flask(__name__, static_folder=os.path.join(FRONTEND_DIR, 'static'))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kissan_ghar.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
@@ -289,5 +293,25 @@ def update_order_status(order_id):
         return jsonify({'message': 'Order status updated successfully!'})
     return jsonify({'message': 'Order not found!'}), 404
 
+# Frontend routes
+@app.route('/')
+@app.route('/<path:path>')
+def serve_frontend(path='index.html'):
+    if path.startswith('api/'):
+        return jsonify({'error': 'API route not found'}), 404
+        
+    if path == 'admin':
+        path = 'admin/index.html'
+        
+    try:
+        return send_from_directory(FRONTEND_DIR, path)
+    except:
+        return send_from_directory(FRONTEND_DIR, 'index.html')
+
+# Admin specific routes
+@app.route('/admin/<path:path>')
+def serve_admin(path):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'admin'), path)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
